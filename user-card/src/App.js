@@ -5,16 +5,23 @@ import Card from "./Components/Card";
 class App extends React.Component {
   state = {
     profile: {},
-    friends: [],
+    followers: [],
   };
 
   componentDidMount() {
     fetch("https://api.github.com/users/reubenpalumbo")
-      .then((res) => {
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => {
         this.setState({ profile: data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    fetch("https://api.github.com/users/reubenpalumbo/followers")
+      .then((res) => res.json())
+      .then((data) => {
+        this.setState({ followers: data });
       })
       .catch((err) => {
         console.log(err);
@@ -25,7 +32,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
-          <Card profile={this.state.profile} />
+          <Card profile={this.state.profile} followers={this.state.followers} />
         </header>
       </div>
     );
